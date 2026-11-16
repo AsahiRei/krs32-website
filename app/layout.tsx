@@ -21,7 +21,7 @@ const silkscreen = Silkscreen({
 export const metadata: Metadata = {
   title: "KRS-32 — Your games, pocket-sized",
   description:
-    "KRS-32 is a 32-bit handheld emulator for Android with pixel-sharp scaling, two-tap save states and controls you can move anywhere.",
+    "KRS-32 is a GBA, DS and 3DS emulator for Android with pixel-sharp scaling, two-tap save states, dual-screen layouts and controls you can move anywhere.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

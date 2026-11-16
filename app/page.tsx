@@ -20,7 +20,19 @@ const features: { title: string; body: string }[] = [
   },
   {
     title: "Screen filters",
-    body: "Original, Smooth, LCD Grid or Scanlines, with a live before/after preview so you can see the difference.",
+    body: "Original, Smooth, LCD Grid or Scanlines with adjustable strength, plus aspect options and a live before/after preview.",
+  },
+  {
+    title: "Two screens, your way",
+    body: "DS and 3DS games can go stacked, side by side, focus, single or pop-up, set separately for portrait and landscape in each game.",
+  },
+  {
+    title: "A library with box art",
+    body: "Pick your ROM folder and KRS-32 finds every game and fetches its cover. Favorite games and sort by last played, play time or size.",
+  },
+  {
+    title: "Fast-forward on tap",
+    body: "Skip the slow parts at any speed from 1.5× to 10×. Audio mutes while you fly through.",
   },
   {
     title: "Bluetooth controllers",
@@ -28,8 +40,14 @@ const features: { title: string; body: string }[] = [
   },
   {
     title: "Cheats that check themselves",
-    body: "Paste a code and KRS-32 points to the exact line and character that's wrong before you save it.",
+    body: "Paste a GBA or DS code and KRS-32 points to the exact line and character that's wrong before you save it.",
   },
+];
+
+const systems: { label: string; name: string; files: string }[] = [
+  { label: "GBA", name: "Game Boy Advance", files: ".gba" },
+  { label: "DS", name: "Nintendo DS", files: ".nds" },
+  { label: "3DS", name: "Nintendo 3DS", files: ".3ds .cci .cxi .3dsx" },
 ];
 
 const promises: { title: string; body: string }[] = [
@@ -49,8 +67,16 @@ const faqs = [
     a: "No. KRS-32 is only the player. You add ROM files you've legally obtained, for example by backing up cartridges you own.",
   },
   {
+    q: "Which systems does it play?",
+    a: "Game Boy Advance, Nintendo DS and Nintendo 3DS. DS and 3DS games need a 64-bit phone, and 3DS games need a 64-bit ARM phone.",
+  },
+  {
     q: "Do I need a BIOS file?",
-    a: "No. KRS-32 runs without one. If you have a BIOS dumped from your own hardware, you can point to it in settings for the original boot screen.",
+    a: "No. KRS-32 uses a built-in open BIOS for GBA and built-in firmware for DS. If you've dumped the BIOS or firmware from your own hardware, you can import it in settings.",
+  },
+  {
+    q: "Will my 3DS games work?",
+    a: "Only decrypted dumps of games you own run. Encrypted 3DS files can't be played, and cheats aren't available for 3DS yet.",
   },
   {
     q: "Can I use a controller?",
@@ -61,6 +87,9 @@ const faqs = [
     a: "KRS-32 is free to download, with no ads and no account required.",
   },
 ];
+
+const DOWNLOAD_URL =
+  "https://download1582.mediafire.com/z0nqbc6i44egGkepNsvIldJ7j-qmM0Kl-XcAalZuDQ1bPw6rx0u9HAMwQCsqw2FgrnGjC94gJ2cQFAabFhNyzFmVY0uvD2Xh9wufT6THD3L2L49naSzgW_shbMd80P26n8tQ2-49N-IGDfjfz05eOvG2vMK-59av8XbjAukJ9iz5UC4/efn0cfye1iuo7y8/krs32-emulator.apk";
 
 /** Stagger index for `.intro` / `[data-reveal]` delays. */
 const stagger = (i: number) => ({ "--i": i }) as CSSProperties;
@@ -135,12 +164,28 @@ export default function Home() {
                 className={`${lead} intro mt-6 max-w-[530px]`}
                 style={stagger(1)}
               >
-                KRS-32 plays the handheld ROMs you already own, with pixel-sharp
-                scaling, two-tap save states and controls you can move anywhere.
+                KRS-32 plays the GBA, DS and 3DS games you already own, with
+                pixel-sharp scaling, two-tap save states and controls you can
+                move anywhere.
               </p>
+              <ul
+                className="intro mt-6 flex flex-wrap gap-2"
+                style={stagger(2)}
+                aria-label="Supported systems"
+              >
+                {systems.map(({ label, name, files }) => (
+                  <li
+                    key={label}
+                    title={`${name} · ${files}`}
+                    className="rounded-lg border border-border bg-raised px-3 py-1.5 font-mono text-[13px] tracking-[0.06em] text-soft"
+                  >
+                    {label}
+                  </li>
+                ))}
+              </ul>
               <div
                 className="intro mt-8 grid gap-3 min-[480px]:flex min-[480px]:flex-wrap"
-                style={stagger(2)}
+                style={stagger(3)}
               >
                 <a
                   href="#download"
@@ -320,7 +365,9 @@ export default function Home() {
             </p>
             <div className="mt-8">
               <a
-                href="#"
+                href={DOWNLOAD_URL}
+                download
+                rel="noopener"
                 className={`${btnPrimary} h-14 w-full justify-center rounded-[14px] text-[17px] sm:w-auto`}
               >
                 <Download size={18} strokeWidth={2} aria-hidden="true" />
